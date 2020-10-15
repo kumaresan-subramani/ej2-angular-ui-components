@@ -1,4 +1,4 @@
-import { Directive, ViewContainerRef, ContentChildren, ContentChild } from '@angular/core';
+import { Directive, ViewContainerRef, ContentChildren, ContentChild, SimpleChanges } from '@angular/core';
 import { ComplexBase, ArrayBase, setValue } from '@syncfusion/ej2-angular-base';
 
 import { ConnectorAnnotationsDirective } from './connector-annotation.directive';
@@ -224,6 +224,16 @@ export class ConnectorDirective extends ComplexBase<ConnectorDirective> {
         setValue('currentInstance', this, this.viewContainerRef);
         this.registerEvents(outputs);
     }
+    ngOnChanges(changes: SimpleChanges) {
+    // changes.prop contains the old and the new value...
+        for (var _i = 0, _a = Object.keys(changes); _i < _a.length; _i++) {
+            var propName = _a[_i];
+            var changedVal = changes[propName];
+            this.propCollection[propName] = changedVal.currentValue;
+        }
+        this.isUpdated = false;
+        this.hasChanges = true;
+    }
 }
 
 /**
@@ -239,5 +249,15 @@ export class ConnectorDirective extends ComplexBase<ConnectorDirective> {
 export class ConnectorsDirective extends ArrayBase<ConnectorsDirective> {
     constructor() {
         super('connectors');
+    }
+    ngOnChanges(changes: SimpleChanges) {
+    // changes.prop contains the old and the new value...
+        for (var _i = 0, _a = Object.keys(changes); _i < _a.length; _i++) {
+            var propName = _a[_i];
+            var changedVal = changes[propName];
+            this.propCollection[propName] = changedVal.currentValue;
+        }
+        this.isUpdated = false;
+        this.hasChanges = true;
     }
 }
